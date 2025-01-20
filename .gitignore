@@ -1,2 +1,5 @@
 /env/bin/
 /env/env_name.txt
+/.vscode/
+/build/
+/res/
