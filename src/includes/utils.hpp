@@ -10,11 +10,14 @@
 
 using std::cout;
 using std::cerr;
+using std::clog;
 using std::endl;
 using std::string;
 
 using std::wcout;
 using std::wcerr;
+using std::wclog;
+
 namespace std {
     #define wendl endl
 }

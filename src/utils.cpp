@@ -16,17 +16,22 @@ bool ExecuteCommand(const string& command, string* output, string* error, int* r
     saAttr.bInheritHandle = TRUE;
     saAttr.lpSecurityDescriptor = NULL;
 
+    string command_to_execute;
+    clog << format("command passed in: {}", command) << endl;
+    command_to_execute = format("cmd /c \"{}\"", command);
+    clog << format("command to execute: {}", command_to_execute) << endl;
+
     // 创建管道用于获取标准输出
     HANDLE hStdOutRead, hStdOutWrite;
     if (!CreatePipe(&hStdOutRead, &hStdOutWrite, &saAttr, 0)) {
-        cerr << format("CreatePipe (StdOut) failed ({})", GetLastError()) << wendl;
+        cerr << format("CreatePipe (StdOut) failed ({})", GetLastError()) << endl;
         return false;
     }
 
     // 创建管道用于获取标准错误
     HANDLE hStdErrRead, hStdErrWrite;
     if (!CreatePipe(&hStdErrRead, &hStdErrWrite, &saAttr, 0)) {
-        cerr << format("CreatePipe (StdErr) failed ({})", GetLastError()) << wendl;
+        cerr << format("CreatePipe (StdErr) failed ({})", GetLastError()) << endl;
         return false;
     }
 
@@ -43,11 +48,11 @@ bool ExecuteCommand(const string& command, string* output, string* error, int* r
     ZeroMemory(&pi, sizeof(pi));
 
     // 将命令行参数转换为 wchar_t 字符串
-    wchar_t* wCommand = convertCharToWChar(command.c_str());
+    wchar_t* wCommand = convertCharToWChar(command_to_execute.c_str());
 
     // 执行命令
     if (!CreateProcess(NULL, wCommand, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi)) {
-        cerr << format("CreateProcess failed ({})", GetLastError()) << wendl;
+        cerr << format("CreateProcess failed ({})", GetLastError()) << endl;
         return false;
     }
 
