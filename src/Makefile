@@ -14,13 +14,17 @@ DEST_DIR = build/dest/
 
 # 编译选项
 CFLAGS = -fdiagnostics-color=always -I"./${SRC_DIR}" -I"./${INC_DIR}"
+# CFLAGS += --std=c++20
+
+LDFLAGS = -lstdc++
 
 # 源文件和目标文件
 SRC = $(SRC_DIR)main.cpp
 OBJ = \
 $(BUILD_DIR)main.o\
 $(BUILD_DIR)version.o\
-$(BUILD_DIR)program_info.o
+$(BUILD_DIR)program_info.o\
+$(BUILD_DIR)utils.o
 
 OBJ += $(BUILD_DIR)resource.res
 
@@ -33,15 +37,15 @@ all: $(TARGET)
 # 链接目标文件生成可执行文件
 $(TARGET): $(OBJ)
 	@ echo Compiling $@
-	$(CC) -fdiagnostics-color=always $(OBJ) -o $(TARGET)
+	$(CPPC) -fdiagnostics-color=always $(OBJ) -o $(TARGET) $(LDFLAGS)
 
 # 编译源文件生成目标文件
 # build/%.o: src/%.c
-# 	$(CC) $(CFLAGS) -c $< -o $@
+# 	$(CPPC) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)program_info.o: $(SRC_DIR)program_info.cpp $(SRC_DIR)version.rc flag_every_time
 	@ echo Compiling $@
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CPPC) $(CFLAGS) -c $< -o $@
 	
 $(BUILD_DIR)version.o: $(SRC_DIR)version.rc
 	@ echo Compiling $@
@@ -54,7 +58,11 @@ $(BUILD_DIR)resource.res: $(SRC_DIR)resource.rc $(INC_DIR)resource.hpp
 $(BUILD_DIR)main.o: $(SRC_DIR)main.cpp \
 	$(INC_DIR)program_info.hpp $(SRC_DIR)version.rc $(INC_DIR)resource.hpp
 	@ echo Compiling $@
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CPPC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)utils.o: $(SRC_DIR)utils.cpp $(INC_DIR)utils.hpp
+	@ echo Compiling $@
+	$(CPPC) $(CFLAGS) -c $< -o $@
 
 
 define clean_file

@@ -1,5 +1,8 @@
 /env/bin/
 /env/env_name.txt
 /.vscode/
-/build/
+/build/build/
+/build/dest/
+/build/collected/
 /res/
+/keep_local/

@@ -14,9 +14,17 @@ const char *get_gcc_version(){
 
 const char *get_gcc_build_description(){
     static char gcc_build_description[2048]={""};
+    static long lang_ver = 0;
+    if (lang_ver == 0) {
+        #ifdef __cplusplus
+            lang_ver = __cplusplus;
+        #else
+            lang_ver = __STDC_VERSION__;
+        #endif
+    }
     if(!gcc_build_description[0]){
         snprintf(gcc_build_description, sizeof(gcc_build_description)*1.0/sizeof(char), 
-        "Build with %s v%s\nBuild Date: %s\nBuild Time: %s", BUILDER_SPECIFIC, get_gcc_version(), BUILD_DATE, BUILD_TIME);
+        "Build with %s v%s\nLanguage Version: %ld\nBuild Date: %s\nBuild Time: %s", BUILDER_SPECIFIC, get_gcc_version(), lang_ver, BUILD_DATE, BUILD_TIME);
         gcc_build_description[2047] = 0;
     }
     return (const char *)gcc_build_description;
