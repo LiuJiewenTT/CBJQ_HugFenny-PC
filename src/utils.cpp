@@ -33,8 +33,12 @@ bool ExecuteCommand(const string& command, string* output, string* error, int* r
 
     string command_to_execute;
     clog << format("command passed in: {}", command) << endl;
-    // command_to_execute = format("cmd /c \"{}\"", ns_string::replace_all(command, "\"", "\"\""));
+    command_to_execute = ns_string::replace_all(command, "\"", "\"\"");
+    command_to_execute = ns_string::replace_all(command, "|", "^|");
+    command_to_execute = ns_string::replace_all(command, ">", "^>");
+    command_to_execute = ns_string::replace_all(command, "<", "^<");
     command_to_execute = format("cmd /c \"{}\"", command);
+    // command_to_execute = format("cmd /c \"{}\"", command);
     clog << format("command to execute: {}", command_to_execute) << endl;
 
     // 创建管道用于获取标准输出
