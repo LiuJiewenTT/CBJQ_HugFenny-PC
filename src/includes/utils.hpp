@@ -26,6 +26,11 @@ using std::wstring;
 
 using std::format;
 
+namespace ns_string {
+    // replace all occurance of t in s to w  
+    std::string replace_all(const std::string & s, std::string const & t, std::string const & w);
+}
+
 
 wchar_t *convertCharToWChar(const char* message);
 #define WCharChar(x) (convertCharToWChar(x))

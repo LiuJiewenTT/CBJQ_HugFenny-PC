@@ -1,6 +1,21 @@
 #include "utils.hpp"
 
 
+namespace ns_string {
+    // replace all occurance of t in s to w  
+    std::string replace_all(const std::string & s, std::string const & t, std::string const & w)  
+    {
+        std::string result = s;
+        std::string::size_type pos = result.find(t), t_size = t.size(), r_size = w.size();  
+        while(pos != std::string::npos) { // found   
+            result.replace(pos, t_size, w);   
+            pos = result.find(t, pos + r_size );   
+        }
+        return result;
+    }  
+}
+
+
 wchar_t *convertCharToWChar(const char* message){
     // 将 char 字符串转换为 wchar_t 字符串
     int len = MultiByteToWideChar(CP_UTF8, 0, message, -1, NULL, 0);
@@ -18,6 +33,7 @@ bool ExecuteCommand(const string& command, string* output, string* error, int* r
 
     string command_to_execute;
     clog << format("command passed in: {}", command) << endl;
+    // command_to_execute = format("cmd /c \"{}\"", ns_string::replace_all(command, "\"", "\"\""));
     command_to_execute = format("cmd /c \"{}\"", command);
     clog << format("command to execute: {}", command_to_execute) << endl;
 

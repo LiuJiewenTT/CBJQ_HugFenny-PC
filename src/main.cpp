@@ -17,7 +17,8 @@ int main() {
     bool command_executed_success_flag = false;
     int command_exit_code = 0;
 
-    command_content_str = "adb --version";
+    // command_content_str = "adb --version";
+    command_content_str = "adb shell \"ls /sdcard/Android/data/ | grep snow\"";
     command_executed_success_flag = ExecuteCommand(command_content_str, &command_output_str, &command_error_str, &command_exit_code);
     printf("command_content_str: %s\n", command_content_str.c_str());
     printf("command_executed_success_flag: %d\n", command_executed_success_flag);
