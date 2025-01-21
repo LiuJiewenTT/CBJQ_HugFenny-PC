@@ -14,7 +14,7 @@ DEST_DIR = build/dest/
 
 # 编译选项
 CFLAGS = -fdiagnostics-color=always -I"./${SRC_DIR}" -I"./${INC_DIR}"
-# CFLAGS += --std=c++20
+CFLAGS += --std=c++20
 
 LDFLAGS = -lstdc++
 

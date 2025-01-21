@@ -19,14 +19,14 @@ bool ExecuteCommand(const string& command, string* output, string* error, int* r
     // 创建管道用于获取标准输出
     HANDLE hStdOutRead, hStdOutWrite;
     if (!CreatePipe(&hStdOutRead, &hStdOutWrite, &saAttr, 0)) {
-        printf("CreatePipe (StdOut) failed (%d)\n", GetLastError());
+        cerr << format("CreatePipe (StdOut) failed ({})", GetLastError()) << wendl;
         return false;
     }
 
     // 创建管道用于获取标准错误
     HANDLE hStdErrRead, hStdErrWrite;
     if (!CreatePipe(&hStdErrRead, &hStdErrWrite, &saAttr, 0)) {
-        printf("CreatePipe (StdErr) failed (%d)\n", GetLastError());
+        cerr << format("CreatePipe (StdErr) failed ({})", GetLastError()) << wendl;
         return false;
     }
 
@@ -47,8 +47,7 @@ bool ExecuteCommand(const string& command, string* output, string* error, int* r
 
     // 执行命令
     if (!CreateProcess(NULL, wCommand, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi)) {
-        // cerr << format("CreateProcess failed ({})", GetLastError()) << wendl;
-        cerr << "CreateProcess failed (" << GetLastError() << ")" << endl;
+        cerr << format("CreateProcess failed ({})", GetLastError()) << wendl;
         return false;
     }
 

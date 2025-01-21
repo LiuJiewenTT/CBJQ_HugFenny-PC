@@ -5,7 +5,7 @@
 #include <iostream>
 #include <cstdio>
 #include <string>
-// #include <format>
+#include <format>
 #include <windows.h>
 
 using std::cout;
@@ -21,7 +21,7 @@ namespace std {
 using std::wendl;
 using std::wstring;
 
-// using std::format;
+using std::format;
 
 
 wchar_t *convertCharToWChar(const char* message);
