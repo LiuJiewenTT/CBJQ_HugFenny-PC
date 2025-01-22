@@ -2,6 +2,10 @@
 
 
 std::vector<string> select_multiple_items(const std::vector<string> &items, const string &title) {
+    if (items.empty()) {
+        return {};
+    }
+    
     std::vector<string> selected_items;
     std::vector<string> available_items = items;
     std::vector<bool> highlights(available_items.size() + 1, 0);

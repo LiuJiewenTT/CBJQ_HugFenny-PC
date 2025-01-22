@@ -2,6 +2,6 @@
 
 
 std::vector<string> select_apps(const std::vector<string> &items) {
-    return std::move(select_multiple_items(items, "Select Applications: "));
+    return select_multiple_items(items, "Select Applications: ");
 }
 

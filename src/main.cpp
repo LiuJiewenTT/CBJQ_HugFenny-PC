@@ -24,9 +24,14 @@ int main() {
     bool command_executed_success_flag = false;
     int command_exit_code = 0;
 
+    #define exit_on_error() if (!command_executed_success_flag || command_exit_code) { \
+        cerr << format("command execution failed: {}", command_error_str) << endl; \
+        return EXIT_FAILURE; \
+    }
 
     command_content_str = "adb --version | findstr /C:\"version\"";
     execute_command(command_content_str, &command_output_str, &command_error_str, &command_exit_code, &command_executed_success_flag);
+    exit_on_error();
     ns_string::trim(command_output_str);
     substring_start_index = command_output_str.find("version");
     adb_version_str = command_output_str.substr(substring_start_index + 8);
@@ -36,14 +41,16 @@ int main() {
 
     command_content_str = wrapStringToEscapeCmd("adb shell \"ls /sdcard/Android/data/ | grep snow\"");
     execute_command(command_content_str, &command_output_str, &command_error_str, &command_exit_code, &command_executed_success_flag);
+    exit_on_error();
     ns_string::trim(command_output_str);
-    // clog << format("command_output_str: {}", command_output_str) << endl;
     ns_string::split_lines(command_output_str, app_package_name_list);
     cout << format("app package name list: {}", ns_string::join_strings(app_package_name_list, ", ")) << endl;
 
     selected_apps_package_name_list = select_apps(app_package_name_list);
     cout << format("selected app package name list: {}", ns_string::join_strings(selected_apps_package_name_list, ", ")) << endl;
 
+
+    #undef exit_on_error
     /*--- divide line ---*/
     return 0;
 }
