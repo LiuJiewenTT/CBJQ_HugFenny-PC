@@ -33,11 +33,12 @@ bool ExecuteCommand(const string& command, string* output, string* error, int* r
 
     string command_to_execute;
     clog << format("command passed in: {}", command) << endl;
-    command_to_execute = ns_string::replace_all(command, "\"", "\"\"");
-    command_to_execute = ns_string::replace_all(command, "|", "^|");
-    command_to_execute = ns_string::replace_all(command, ">", "^>");
-    command_to_execute = ns_string::replace_all(command, "<", "^<");
-    command_to_execute = format("cmd /c \"{}\"", command);
+    command_to_execute = command;
+    command_to_execute = ns_string::replace_all(command_to_execute, "\"", "\"\"");
+    command_to_execute = ns_string::replace_all(command_to_execute, "|", "^|");
+    command_to_execute = ns_string::replace_all(command_to_execute, ">", "^>");
+    command_to_execute = ns_string::replace_all(command_to_execute, "<", "^<");
+    command_to_execute = format("cmd /c \"{}\"", command_to_execute);
     // command_to_execute = format("cmd /c \"{}\"", command);
     clog << format("command to execute: {}", command_to_execute) << endl;
 
