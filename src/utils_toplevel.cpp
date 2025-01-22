@@ -31,6 +31,35 @@ bool exist_localization_file(const string &app) {
 }
 
 
+std::vector<bool> delete_all_localization_files(const std::vector<string> &apps, const std::vector<bool> &delete_flags) {
+    std::vector<bool> success_flags;
+    for (size_t i = 0; i < apps.size(); ++i) {
+        if (delete_flags[i]) {
+            success_flags.push_back(delete_localization_file(apps[i]));
+        } else {
+            success_flags.push_back(true);
+        }
+    }
+    return success_flags;
+}
+
+
+bool delete_localization_file(const string &app) {
+    string command_content_str, command_output_str, command_error_str;
+    bool command_executed_success_flag = false;
+    int command_exit_code = 0;
+
+    command_content_str = format("adb shell \"rm /sdcard/Android/data/{}/files/localization.txt\"", app);
+    command_content_str = wrapStringToEscapeCmd(command_content_str);
+    execute_command(command_content_str, &command_output_str, &command_error_str, &command_exit_code, &command_executed_success_flag);
+    if (!command_executed_success_flag || command_exit_code) {
+        return false;
+    }
+
+    return true;
+}
+
+
 std::vector<int> get_localization_values(const std::vector<string> &apps) {
     std::vector<int> values;
     for (const auto &app : apps) {
@@ -69,5 +98,39 @@ int get_localization_value(const string &app) {
     }
 
     return retv;
+}
+
+
+std::vector<bool> set_localization_values(const std::vector<string> &apps, const std::vector<int> &values, const std::vector<int> *reference_values = nullptr) {
+    std::vector<bool> success_flags;
+    for (size_t i = 0; i < apps.size(); ++i) {
+        success_flags.push_back(set_localization_value(apps[i], values[i], (reference_values == nullptr ? nullptr : &reference_values->at(i))));
+    }
+    return success_flags;
+}
+
+
+std::vector<bool> set_localization_values_same_for_all(const std::vector<string> &apps, const int &value, const std::vector<int> *reference_values = nullptr) {
+    std::vector<bool> success_flags;
+    for (const auto &app : apps) {
+        success_flags.push_back(set_localization_value(app, value, (reference_values == nullptr ? nullptr : &reference_values->at(0))));
+    }
+    return success_flags;
+}
+
+
+bool set_localization_value(const string &app, const int value, const int *reference_value = nullptr) {
+    string command_content_str, command_output_str, command_error_str;
+    bool command_executed_success_flag = false;
+    int command_exit_code = 0;
+
+    command_content_str = format("adb shell \"echo {} > /sdcard/Android/data/{}/files/localization.txt\"", value, app);
+    command_content_str = wrapStringToEscapeCmd(command_content_str);
+    execute_command(command_content_str, &command_output_str, &command_error_str, &command_exit_code, &command_executed_success_flag);
+    if (!command_executed_success_flag || command_exit_code) {
+        return false;
+    }
+
+    return true;
 }
 

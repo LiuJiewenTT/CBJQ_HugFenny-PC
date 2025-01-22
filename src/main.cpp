@@ -24,11 +24,18 @@ int main(int argc, char *argv[]) {
     std::vector<int> selected_apps_localization_value_list;
     std::vector<bool> selected_apps_localization_file_existence_list;
     std::vector<bool> selected_apps_localization_file_may_try_deletion_list;
+    std::vector<bool> selected_apps_localization_file_existence_after_deletion_list;
+    std::vector<bool> selected_apps_localization_file_may_try_deletion_failed_list;
+    std::vector<bool> selected_apps_localization_file_may_try_deletion_failed_list_1;
+    std::vector<bool> selected_apps_localization_file_may_try_deletion_failed_list_2;
+    std::vector<bool> selected_apps_write_localization_value_failed_list;
 
     int operation_choice = 0;
     string operation_choice_str;
     std::vector<string> operation_choice_list;
     std::vector<string> operation_choice_list_1 = {"All 1", "All 0", "Let me decide on each app"};
+    std::vector<string> operation_choice_list_2 = {"All 1", "All 0", "Let me decide on each app"};
+    std::vector<string> operation_choice_list_3 = {"Yes", "No"};
 
     int substring_start_index = 0;
     string command_content_str, command_output_str, command_error_str;
@@ -104,6 +111,42 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    operation_choice = select_single_item(operation_choice_list_2, "Do you want to try the solution of deletion on selected apps: ");
+    operation_choice_str = operation_choice_list_2[operation_choice];
+    cout << format("operation choice: {}", operation_choice_str) << endl;
+
+    switch (operation_choice) {
+        case 0:
+            selected_apps_localization_file_may_try_deletion_failed_list_1 = delete_all_localization_files(selected_apps_package_name_list, selected_apps_localization_file_may_try_deletion_list);
+            break;
+        case 1:
+            // Do nothing, passed.
+            break;
+        case 2: {
+            for (int i = 0; i < selected_apps_package_name_list.size(); ++i) {
+                string app_package_name = selected_apps_package_name_list[i];
+                bool localization_file_may_try_deletion = selected_apps_localization_file_may_try_deletion_list[i];
+                if (localization_file_may_try_deletion) {
+                    operation_choice = select_single_item(operation_choice_list_3, "Do you want to try the solution of deletion on selected app: " + app_package_name + ": ");
+                    operation_choice_str = operation_choice_list_3[operation_choice];
+                    cout << format("operation choice: {}", operation_choice_str) << endl;
+                    switch (operation_choice) {
+                        case 0: {
+                            bool try_deletion_failed = delete_localization_file(app_package_name);
+                            selected_apps_localization_file_may_try_deletion_failed_list_1.push_back(try_deletion_failed);
+                            break;
+                        }
+                        default:
+                            selected_apps_localization_file_may_try_deletion_failed_list_1.push_back(false);
+                    }
+                } else {
+                    selected_apps_localization_file_may_try_deletion_failed_list_1.push_back(false);
+                }
+            }
+            break;
+        }
+    }
+
     cout << "selected app localization file may try deletion list: " << endl;
     for (int i = 0; i < selected_apps_package_name_list.size(); ++i) {
         string app_package_name = selected_apps_package_name_list[i];
@@ -111,9 +154,20 @@ int main(int argc, char *argv[]) {
         cout << format("app package name: {}, localization file may try deletion: {}", app_package_name, localization_file_may_try_deletion) << endl;
     }
 
-    operation_choice = select_single_item(operation_choice_list_1, "Please select an operation to perform on selected apps: ");
-    operation_choice_str = operation_choice_list_1[operation_choice];
+    operation_choice = select_single_item(operation_choice_list_2, "Please select an operation to perform on selected apps: ");
+    operation_choice_str = operation_choice_list_2[operation_choice];
     cout << format("operation choice: {}", operation_choice_str) << endl;
+
+    switch (operation_choice) {
+        case 0:
+            selected_apps_write_localization_value_failed_list = set_localization_values_same_for_all(selected_apps_package_name_list, 1, &selected_apps_localization_value_list);
+            break;
+        case 1:
+            selected_apps_write_localization_value_failed_list = set_localization_values_same_for_all(selected_apps_package_name_list, 0, &selected_apps_localization_value_list);
+            break;
+        case 2:
+            break;
+    }
 
     #undef exit_on_error
     /*--- divide line ---*/
