@@ -55,7 +55,12 @@ namespace ns_string {
         std::istringstream iss(s);
         std::string line;
         while (std::getline(iss, line)) {
-            trim(line);
+            if (line.back() == '\r' || line.back() == '\n') {
+                line.pop_back();
+                if (!line.empty() && (line.back() == '\r' || line.back() == '\n')) {
+                    line.pop_back();
+                }
+            }
             lines.push_back(line);
         }
     }
