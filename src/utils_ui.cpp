@@ -1,12 +1,66 @@
 #include "utils_ui.hpp"
 
 
-std::vector<string> select_multiple_items(const std::vector<string> &items, const string &title) {
+int select_single_item(const std::vector<string> &items, const string &title) {
+    int retv_fail = -1;
+    if (items.empty()) {
+        return retv_fail;
+    }
+
+    u_char key;
+    std::vector<bool> highlights(items.size() + 1, 0);
+    int current_position = 0;
+    COORD start_coord;
+    COORD cursor_pos;
+
+    cout << title << endl;
+    start_coord = getCursorPosition();
+
+    while (true) {
+        display_menu(items, highlights, current_position, start_coord);
+        key = getch();
+        switch (key) {
+            case 13: // Enter
+                cursor_pos = start_coord;
+                cursor_pos.Y += items.size();
+                setCursorPosition(cursor_pos);
+                return current_position;
+                break;
+            case 224: {
+                key = getch();
+                switch (key) {
+                    case 72: // Up
+                        current_position = (current_position - 1 + items.size()) % items.size();
+                        break;
+                    case 80: // Down
+                        current_position = (current_position + 1) % items.size();
+                        break;
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    return retv_fail; // Not reached
+}
+
+
+string select_single_item_str(const std::vector<string> &items, const string &title) {
+    int index = select_single_item(items, title);
+    if (index < 0) {
+        return "";
+    }
+    return items[index];
+}
+
+
+std::vector<int> select_multiple_items(const std::vector<string> &items, const string &title) {
     if (items.empty()) {
         return {};
     }
-    
-    std::vector<string> selected_items;
+
+    std::vector<int> selected_items;
     std::vector<string> available_items = items;
     std::vector<bool> highlights(available_items.size() + 1, 0);
     u_char key;
@@ -28,11 +82,16 @@ std::vector<string> select_multiple_items(const std::vector<string> &items, cons
                     selected_items.clear(); // empty vector
                 } else {
                     if (highlights[0]) {
-                        selected_items = items; // all items selected
+                        // all items selected
+                        // std::ranges::copy(std::ranges::iota_view{0, (int)items.size()}, selected_items.begin());
+                        // std::iota(selected_items.begin(), selected_items.end(), 0);
+                        for (int i = 1; i < highlights.size(); ++i) {
+                            selected_items.push_back(i - 1);
+                        }
                     } else {
                         for (int i = 1; i < highlights.size(); ++i) {
                             if (highlights[i]) {
-                                selected_items.push_back(available_items[i]);
+                                selected_items.push_back(i - 1);
                             }
                         }
                     }
@@ -62,6 +121,21 @@ std::vector<string> select_multiple_items(const std::vector<string> &items, cons
         }
     }
     return selected_items; // Not reached
+}
+
+
+std::vector<string> select_multiple_items_str(const std::vector<string> &items, const string &title) {
+    if (items.empty()) {
+        return {};
+    }
+
+    std::vector<int> selected_items;
+    std::vector<string> selected_items_str;
+    selected_items = select_multiple_items(items, title);
+    for (int i : selected_items) {
+        selected_items_str.push_back(items[i]);
+    }
+    return selected_items_str;
 }
 
 
