@@ -1,44 +1,110 @@
 #include "utils.hpp"
 
-
 namespace ns_string {
-    // replace all occurance of t in s to w  
-    std::string replace_all(const std::string & s, std::string const & t, std::string const & w)  
-    {
+    // replace all occurance of t in s to w
+    std::string replace_all(const std::string &s, std::string const &t, std::string const &w) {
         std::string result = s;
-        std::string::size_type pos = result.find(t), t_size = t.size(), r_size = w.size();  
-        while(pos != std::string::npos) { // found   
-            result.replace(pos, t_size, w);   
-            pos = result.find(t, pos + r_size );   
+        std::string::size_type pos = result.find(t), t_size = t.size(), r_size = w.size();
+        while (pos != std::string::npos) { // found
+            result.replace(pos, t_size, w);
+            pos = result.find(t, pos + r_size);
         }
         return result;
-    }  
-}
+    }
+
+    // trim from start (in place)
+    void ltrim(std::string &s) {
+        s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+            return !std::isspace(ch);
+        }));
+    }
+
+    // trim from end (in place)
+    void rtrim(std::string &s) {
+        s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+            return !std::isspace(ch);
+        }).base(), s.end());
+    }
+
+    // trim from both ends (in place)
+    void trim(std::string &s) {
+        rtrim(s);
+        ltrim(s);
+    }
+
+    // trim from start (copying)
+    std::string ltrim_copy(std::string s) {
+        ltrim(s);
+        return s;
+    }
+
+    // trim from end (copying)
+    std::string rtrim_copy(std::string s) {
+        rtrim(s);
+        return s;
+    }
+
+    // trim from both ends (copying)
+    std::string trim_copy(std::string s) {
+        trim(s);
+        return s;
+    }
+
+    void split_lines(const std::string &s, std::vector<std::string> &lines) {
+        lines.clear();
+        std::istringstream iss(s);
+        std::string line;
+        while (std::getline(iss, line)) {
+            trim(line);
+            lines.push_back(line);
+        }
+    }
+
+    std::string join_strings(const std::vector<std::string>& strings, const std::string& delimiter) {
+        std::ostringstream oss;
+        int size = strings.size();
+        clog << format("join_strings: size: {}", size) << endl;
+        for (int i = 0; i < size; ++i) {
+            oss << strings[i];
+            if (i != size - 1) {
+                oss << delimiter;
+            }
+        }
+        cout << oss.str() << endl;
+        // clog << format("join_strings: {}", oss.str().c_str()) << endl;
+        return oss.str();
+    }
+} // namespace ns_string
 
 
-wchar_t *convertCharToWChar(const char* message){
+wchar_t *convertCharToWChar(const char *message) {
     // 将 char 字符串转换为 wchar_t 字符串
     int len = MultiByteToWideChar(CP_UTF8, 0, message, -1, NULL, 0);
-    wchar_t* wMessage = (wchar_t*)malloc(len * sizeof(wchar_t));
+    wchar_t *wMessage = (wchar_t *)malloc(len * sizeof(wchar_t));
     MultiByteToWideChar(CP_UTF8, 0, message, -1, wMessage, len);
     return wMessage;
 }
 
 
-bool ExecuteCommand(const string& command, string* output, string* error, int* returnCode) {
+string wrapStringToEscapeCmd(const string &str) {
+    string result = str;
+    result = ns_string::replace_all(result, "\"", "\"\"");
+    result = ns_string::replace_all(result, "|", "^|");
+    result = ns_string::replace_all(result, ">", "^>");
+    result = ns_string::replace_all(result, "<", "^<");
+    return result;
+}
+
+
+bool ExecuteCommand(const string &command, string *output, string *error, int *returnCode) {
     SECURITY_ATTRIBUTES saAttr;
     saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
     saAttr.bInheritHandle = TRUE;
     saAttr.lpSecurityDescriptor = NULL;
 
     string command_to_execute;
-    clog << format("command passed in: {}", command) << endl;
-    command_to_execute = command;
-    command_to_execute = ns_string::replace_all(command_to_execute, "\"", "\"\"");
-    command_to_execute = ns_string::replace_all(command_to_execute, "|", "^|");
-    command_to_execute = ns_string::replace_all(command_to_execute, ">", "^>");
-    command_to_execute = ns_string::replace_all(command_to_execute, "<", "^<");
-    command_to_execute = format("cmd /c \"{}\"", command_to_execute);
+    clog << format("command passed in: {}", command) << endl;    
+    command_to_execute = format("cmd /c \"{}\"", command);
     // command_to_execute = format("cmd /c \"{}\"", command);
     clog << format("command to execute: {}", command_to_execute) << endl;
 
@@ -69,7 +135,7 @@ bool ExecuteCommand(const string& command, string* output, string* error, int* r
     ZeroMemory(&pi, sizeof(pi));
 
     // 将命令行参数转换为 wchar_t 字符串
-    wchar_t* wCommand = convertCharToWChar(command_to_execute.c_str());
+    wchar_t *wCommand = convertCharToWChar(command_to_execute.c_str());
 
     // 执行命令
     if (!CreateProcess(NULL, wCommand, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi)) {
@@ -111,3 +177,21 @@ bool ExecuteCommand(const string& command, string* output, string* error, int* r
 }
 
 
+int execute_command(const string &command_content_str, string *command_output_str, string *command_error_str, int *command_exit_code,
+                    bool *command_executed_success_flag) {
+    clog << format("command_content_str: {}", command_content_str) << endl;
+    string output, error;
+    bool status;
+    int exit_code = 0;
+    status = ExecuteCommand(command_content_str, &output, &error, &exit_code);
+    command_executed_success_flag != nullptr ? (*command_executed_success_flag = status) : 0;
+    command_exit_code != nullptr ? (*command_exit_code = exit_code) : 0;
+    command_output_str != nullptr ? (*command_output_str = output) : 0;
+    command_error_str != nullptr ? (*command_error_str = error) : 0;
+
+    clog << format("command_executed_success_flag: {}", status) << endl;
+    clog << format("command_exit_code: {}", exit_code) << endl;
+    clog << format("command_output_str: {}", output) << endl;
+    clog << format("command_error_str: {}", error) << endl;
+    return exit_code;
+}

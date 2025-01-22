@@ -9,23 +9,43 @@ int main() {
     SetConsoleOutputCP(CP_UTF8); 
     #endif
     setlocale(LC_ALL, "C.UTF-8");
-    printf("%s\n", PROGRAM_INFO_STRING);
+    printf("%s\n\n", PROGRAM_INFO_STRING);
 
     /*--- divide line ---*/
 
+    string adb_version_str;
+
+    std::vector<string> server_packages_list;
+
+    int substring_start_index = 0;
     string command_content_str, command_output_str, command_error_str;
     bool command_executed_success_flag = false;
     int command_exit_code = 0;
-
-    // command_content_str = "adb --version";
-    command_content_str = "adb shell \"ls /sdcard/Android/data/ | grep snow\"";
-    command_executed_success_flag = ExecuteCommand(command_content_str, &command_output_str, &command_error_str, &command_exit_code);
-    printf("command_content_str: %s\n", command_content_str.c_str());
-    printf("command_executed_success_flag: %d\n", command_executed_success_flag);
-    printf("command_exit_code: %d\n", command_exit_code);
-    printf("command_output_str: %s\n", command_output_str.c_str());
-    printf("command_error_str: %s\n", command_error_str.c_str());
     
+    std::istringstream iss;
+    string line_str;
+
+    command_content_str = "adb --version | findstr /C:\"version\"";
+    execute_command(command_content_str, &command_output_str, &command_error_str, &command_exit_code, &command_executed_success_flag);
+    ns_string::trim(command_output_str);
+    substring_start_index = command_output_str.find("version");
+    adb_version_str = command_output_str.substr(substring_start_index + 8);
+    cout << format("adb version: {}", adb_version_str) << endl;
+
+    command_content_str = wrapStringToEscapeCmd("adb shell \"ls /sdcard/Android/data/ | grep snow\"");
+    execute_command(command_content_str, &command_output_str, &command_error_str, &command_exit_code, &command_executed_success_flag);
+    ns_string::trim(command_output_str);
+    // clog << format("command_output_str: {}", command_output_str) << endl;
+    ns_string::split_lines(command_output_str, server_packages_list);
+    for (auto &package_name : server_packages_list) {
+        cout << format("server package: {}", package_name) << endl;
+    }
+    ns_string::join_strings(server_packages_list, ", ");
+    // cout << ns_string::join_strings(server_packages_list, ", ") << endl;
+    // cout << format("server packages: {}", ns_string::join_strings(server_packages_list, ", ")) << endl;
+    
+    std::vector<std::string> words = {"Hello", "world", "C++"};
+    ns_string::join_strings(words, ", ");
     /*--- divide line ---*/
     return 0;
 }
