@@ -42,9 +42,14 @@ namespace ns_string {
     std::string rtrim_copy(std::string s);
     std::string trim_copy(std::string s);
 
-    // std::vector<std::string> split(const std::string &s, char delimiter);
+
     void split_lines(const std::string &s, std::vector<std::string> &lines);
     std::string join_strings(const std::vector<std::string>& strings, const std::string& delimiter);
+
+    // A function modified from https://stackoverflow.com/a/14266139
+
+    std::vector<std::string> split(const std::string& s, const std::string& delimiter);
+
 } // namespace ns_string
 
 
@@ -73,3 +78,11 @@ bool ExecuteCommand(const string &command, string *output, string *error, int *r
  */
 int execute_command(const string &command_content_str, string *command_output_str = nullptr, string *command_error_str = nullptr,
                     int *command_exit_code = nullptr, bool *command_executed_success_flag = nullptr);
+
+
+void setCursorPosition(int x, int y);
+void setCursorPosition(COORD coord);
+
+
+COORD getCursorPosition();
+

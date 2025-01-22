@@ -76,6 +76,21 @@ namespace ns_string {
         }
         return oss.str();
     }
+
+    std::vector<std::string> split(const std::string& s, const std::string& delimiter) {
+        std::vector<std::string> tokens;
+        size_t pos = 0;
+        std::string s_copy, token;
+        s_copy = s;
+        while ((pos = s_copy.find(delimiter)) != std::string::npos) {
+            token = s_copy.substr(0, pos);
+            tokens.push_back(token);
+            s_copy.erase(0, pos + delimiter.length());
+        }
+        tokens.push_back(s_copy);
+
+        return tokens;
+    }
 } // namespace ns_string
 
 
@@ -196,4 +211,27 @@ int execute_command(const string &command_content_str, string *command_output_st
     clog << format("command_output_str: {}", output) << endl;
     clog << format("command_error_str: {}", error) << endl;
     return exit_code;
+}
+
+
+// 光标移动到指定位置
+void setCursorPosition(int x, int y) {
+    COORD coord = {static_cast<SHORT>(x), static_cast<SHORT>(y)};
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+
+void setCursorPosition(COORD coord) {
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+
+COORD getCursorPosition() {
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+        return csbi.dwCursorPosition; // 返回光标位置
+    } else {
+        // 如果获取失败，返回一个无效的坐标
+        return { -1, -1 };
+    }
 }

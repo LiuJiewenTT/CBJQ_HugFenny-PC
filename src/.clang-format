@@ -6,3 +6,5 @@ NamespaceIndentation: All
 KeepEmptyLinesAtTheStartOfBlocks: true # 默认是 true，保留空行
 MaxEmptyLinesToKeep: 2 # 将多余的空行减少到 1 行
 AllowShortBlocksOnASingleLine: true # 是否允许短的代码块放在同一行
+IndentCaseLabels: true
+

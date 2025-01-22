@@ -24,7 +24,8 @@ OBJ = \
 $(BUILD_DIR)main.o\
 $(BUILD_DIR)version.o\
 $(BUILD_DIR)program_info.o\
-$(BUILD_DIR)utils.o
+$(BUILD_DIR)utils.o\
+$(BUILD_DIR)utils_toplevel.o
 
 OBJ += $(BUILD_DIR)resource.res
 
@@ -64,6 +65,9 @@ $(BUILD_DIR)utils.o: $(SRC_DIR)utils.cpp $(INC_DIR)utils.hpp
 	@ echo Compiling $@
 	$(CPPC) $(CFLAGS) -c $< -o $@
 
+$(BUILD_DIR)utils_toplevel.o: $(SRC_DIR)utils_toplevel.cpp $(INC_DIR)utils_toplevel.hpp
+	@ echo Compiling $@
+	$(CPPC) $(CFLAGS) -c $< -o $@
 
 define clean_file
 	del /Q /F "$(subst /,\\,$(1))"
