@@ -63,15 +63,12 @@ namespace ns_string {
     std::string join_strings(const std::vector<std::string>& strings, const std::string& delimiter) {
         std::ostringstream oss;
         int size = strings.size();
-        clog << format("join_strings: size: {}", size) << endl;
         for (int i = 0; i < size; ++i) {
             oss << strings[i];
             if (i != size - 1) {
                 oss << delimiter;
             }
         }
-        cout << oss.str() << endl;
-        // clog << format("join_strings: {}", oss.str().c_str()) << endl;
         return oss.str();
     }
 } // namespace ns_string

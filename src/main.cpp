@@ -15,7 +15,7 @@ int main() {
 
     string adb_version_str;
 
-    std::vector<string> server_packages_list;
+    std::vector<string> app_package_name_list;
 
     int substring_start_index = 0;
     string command_content_str, command_output_str, command_error_str;
@@ -36,16 +36,9 @@ int main() {
     execute_command(command_content_str, &command_output_str, &command_error_str, &command_exit_code, &command_executed_success_flag);
     ns_string::trim(command_output_str);
     // clog << format("command_output_str: {}", command_output_str) << endl;
-    ns_string::split_lines(command_output_str, server_packages_list);
-    for (auto &package_name : server_packages_list) {
-        cout << format("server package: {}", package_name) << endl;
-    }
-    ns_string::join_strings(server_packages_list, ", ");
-    // cout << ns_string::join_strings(server_packages_list, ", ") << endl;
-    // cout << format("server packages: {}", ns_string::join_strings(server_packages_list, ", ")) << endl;
-    
-    std::vector<std::string> words = {"Hello", "world", "C++"};
-    ns_string::join_strings(words, ", ");
+    ns_string::split_lines(command_output_str, app_package_name_list);
+    cout << format("app package name list: {}", ns_string::join_strings(app_package_name_list, ", ")) << endl;
+
     /*--- divide line ---*/
     return 0;
 }
