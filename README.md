@@ -30,7 +30,9 @@ permalink: /
 
 项目地址：[https://github.com/LiuJiewenTT/CBJQ_HugFenny-PC](https://github.com/LiuJiewenTT/CBJQ_HugFenny-PC)<br>
 项目主页：[https://LiuJiewenTT.github.io/CBJQ_HugFenny-PC](https://LiuJiewenTT.github.io/CBJQ_HugFenny-PC)<br>
-下载页：[https://github.com/LiuJiewenTT/CBJQ_HugFenny-PC/releases](https://github.com/LiuJiewenTT/CBJQ_HugFenny-PC/releases)
+下载页：[https://github.com/LiuJiewenTT/CBJQ_HugFenny-PC/releases](https://github.com/LiuJiewenTT/CBJQ_HugFenny-PC/releases)<br>
+视频教程：[https://www.bilibili.com/video/BV1mDf5Y3ERU/](https://www.bilibili.com/video/BV1mDf5Y3ERU)
+
 
 原计划是[安卓端APP](https://github.com/LiuJiewenTT/CBJQ_HugFenny)，但由于 *Shizuku* 方面的原因，暂时不确定如何解决“最后一个问题”。
 
