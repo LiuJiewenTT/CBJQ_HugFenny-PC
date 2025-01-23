@@ -32,9 +32,6 @@ permalink: /
 项目主页：[https://LiuJiewenTT.github.io/CBJQ_HugFenny-PC](https://LiuJiewenTT.github.io/CBJQ_HugFenny-PC)<br>
 下载页：[https://github.com/LiuJiewenTT/CBJQ_HugFenny-PC/releases](https://github.com/LiuJiewenTT/CBJQ_HugFenny-PC/releases)
 
-
-> 当前项目暂用CBJQ_XiaoKaiGuan项目的图标，由于暂未取得授权，相关资源和版本不会发布。
-
 原计划是[安卓端APP](https://github.com/LiuJiewenTT/CBJQ_HugFenny)，但由于 *Shizuku* 方面的原因，暂时不确定如何解决“最后一个问题”。
 
 电脑端小开关切换工具：[https://github.com/LiuJiewenTT/CBJQ_XiaoKaiGuan](https://github.com/LiuJiewenTT/CBJQ_XiaoKaiGuan)

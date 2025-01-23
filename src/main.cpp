@@ -41,8 +41,8 @@ int main(int argc, char *argv[]) {
     int operation_choice = 0;
     string operation_choice_str;
     std::vector<string> operation_choice_list;
-    std::vector<string> operation_choice_list_1 = {"All 1", "All 0", "Let me decide on each app", "Keep current states"};
-    std::vector<string> operation_choice_list_2 = {"Approve all", "Disapprove all", "Let me decide on each app"};
+    std::vector<string> operation_choice_list_1 = {"All 1", "All 0", "Let me decide on every app", "Keep current states"};
+    std::vector<string> operation_choice_list_2 = {"Approve all", "Disapprove all", "Let me decide on every app"};
     std::vector<string> operation_choice_list_3 = {"Yes", "No"};
     std::vector<string> operation_choice_list_4 = {"Set to 1", "Set to 0", "Keep current state"};
 
@@ -287,12 +287,11 @@ int main(int argc, char *argv[]) {
                     cout << format("operation choice: {}", operation_choice_str) << endl;
                     switch (operation_choice) {
                         case 0:
-                            localization_value = 1;
+                            localization_value = !localization_value;
                             write_localization_value_failed_1 = !set_localization_value(app_package_name, localization_value);
                             break;
                         case 1:
-                            localization_value = 0;
-                            write_localization_value_failed_1 = !set_localization_value(app_package_name, localization_value);
+                            write_localization_value_failed_1 = false;
                             break;
                     }
                 } else {
