@@ -21,6 +21,8 @@ int select_single_item(const std::vector<string> &items, const string &title) {
         key = getch();
         switch (key) {
             case 13: // Enter
+                highlights[current_position] = 1; // highlight current item
+                display_menu(items, highlights, current_position, start_coord);
                 cursor_pos = start_coord;
                 cursor_pos.Y += items.size();
                 setCursorPosition(cursor_pos);
@@ -83,8 +85,6 @@ std::vector<int> select_multiple_items(const std::vector<string> &items, const s
                 } else {
                     if (highlights[0]) {
                         // all items selected
-                        // std::ranges::copy(std::ranges::iota_view{0, (int)items.size()}, selected_items.begin());
-                        // std::iota(selected_items.begin(), selected_items.end(), 0);
                         for (int i = 1; i < highlights.size(); ++i) {
                             selected_items.push_back(i - 1);
                         }
