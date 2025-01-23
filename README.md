@@ -1,7 +1,5 @@
 ---
 date: 2025-01-23 20:36:00 +0800
-redirect_from:
-  - /README/
 ---
 
 # CBJQ_HugFenny-PC
