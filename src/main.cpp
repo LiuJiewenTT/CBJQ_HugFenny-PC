@@ -7,6 +7,7 @@
 
 
 bool disable_log_stream_flag = true;
+bool nopause_flag = false;
 
 
 int main(int argc, char *argv[]) {
@@ -50,8 +51,13 @@ int main(int argc, char *argv[]) {
     bool command_executed_success_flag = false;
     int command_exit_code = 0;
 
+    #define try_pause() if (!nopause_flag) { \
+        system("pause"); \
+    } 
+
     #define exit_on_error() if (!command_executed_success_flag || command_exit_code) { \
         cerr << format("command execution failed: {}", command_error_str) << endl; \
+        try_pause();\
         return EXIT_FAILURE; \
     }
 
@@ -64,6 +70,15 @@ int main(int argc, char *argv[]) {
         } else {
             disable_log_stream_flag = false;
             clog.rdbuf(nullStream.rdbuf());
+        }
+    }
+
+    {
+        string filename = string(argv[0]) + ".nopause";
+        FILE *fp = fopen(filename.c_str(), "r");
+        if (fp) {
+            fclose(fp);
+            nopause_flag = true;
         }
     }
 
@@ -88,6 +103,7 @@ int main(int argc, char *argv[]) {
     cout << format("selected app package name list: {}", ns_string::join_strings(selected_apps_package_name_list, ", ")) << endl;
     if (selected_apps_package_name_list.empty()) {
         cerr << "no app selected, exit" << endl;
+        try_pause();
         return EXIT_SUCCESS;
     }
 
@@ -212,6 +228,7 @@ int main(int argc, char *argv[]) {
                     clog << format("app package name: {}, try deletion failed: {}", app_package_name, try_deletion_failed) << endl;
                 }
             }
+            try_pause();
             return EXIT_FAILURE;
         } else {
             cout << "Apply the solution of deletion to all selected apps successfully." << endl;
@@ -245,7 +262,7 @@ int main(int argc, char *argv[]) {
             for (int i = 0; i < selected_apps_package_name_list.size(); ++i) {
                 selected_apps_write_localization_value_failed_list_1[i] = !selected_apps_write_localization_value_failed_list_1[i];
             }
-            
+
             selected_apps_localization_value_list = get_localization_values(selected_apps_package_name_list);
             for (int i = 0; i < selected_apps_package_name_list.size(); ++i) {
                 bool write_localization_value_failed_1 = selected_apps_write_localization_value_failed_list_1[i];
@@ -339,6 +356,7 @@ int main(int argc, char *argv[]) {
                 clog << format("app package name: {}, write localization value failed: {}", app_package_name, write_localization_value_failed) << endl;
             }
         }
+        try_pause();
         return EXIT_FAILURE;
     } else {
         cout << "Setting the localization state of all selected apps successfully." << endl;
@@ -347,5 +365,8 @@ int main(int argc, char *argv[]) {
 
     #undef exit_on_error
     /*--- divide line ---*/
+
+    try_pause();
+    #undef try_pause
     return EXIT_SUCCESS;
 }
