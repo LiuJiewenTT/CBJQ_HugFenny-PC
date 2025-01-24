@@ -127,7 +127,7 @@ bool set_localization_value(const string &app, const int value, const int *refer
     bool command_executed_success_flag = false;
     int command_exit_code = 0;
 
-    command_content_str = format("adb shell \"echo localization_value={} > /sdcard/Android/data/{}/files/localization.txt\"", value, app);
+    command_content_str = format("adb shell \"echo localization={} > /sdcard/Android/data/{}/files/localization.txt\"", value, app);
     command_content_str = wrapStringToEscapeCmd(command_content_str);
     execute_command(command_content_str, &command_output_str, &command_error_str, &command_exit_code, &command_executed_success_flag);
     if (!command_executed_success_flag || command_exit_code) {
