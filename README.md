@@ -61,11 +61,11 @@ permalink: /
    删除请求列出的操作项目解释如下：
    - `Approve all`：确认对所有APP执行删除。
    - `Disapprove all`：拒绝对所有APP执行删除。
-   - `Let me decide on each app`：逐一选择是否执行删除。
+   - `Let me decide on every app`：逐一选择是否执行删除。
 4. 选择要对状态操作的选项（单选），方向键移动，按下回车确认。操作解释如下：
    - `All 1`：全部开启本地化。
    - `All 0`：全部关闭本地化。
-   - `Let me decide on each app`：逐一选择开启/关闭本地化。
+   - `Let me decide on every app`：逐一选择开启/关闭本地化。
    - `Keep current states`：保持当前状态不变。
 5. 等待程序运行完成，如果所有操作成功，你将会看到`... successfully.`。
 
@@ -78,8 +78,8 @@ permalink: /
 
 本程序不需要配置，但提供一些所谓的“高级配置”：
 
-1. 运行结束后不暂停和等待按键：添加文件`CBJQ_HugFenny-PC.exe.enable_log_stream`。
-2. 打印clog流的调试信息：添加文件`CBJQ_HugFenny-PC.exe.nopause`。
+1. 运行结束后不暂停和等待按键：添加文件`CBJQ_HugFenny-PC.exe.nopause`。
+2. 打印clog流的调试信息：添加文件`CBJQ_HugFenny-PC.exe.enable_log_stream`。
 
 
 ## 构建指南
