@@ -1,5 +1,5 @@
 ---
-date: 2025-01-23 20:36:00 +0800
+date: 2025-05-25 22:12:00 +0800
 redirect_from:
   - /README/
 permalink: /
@@ -34,7 +34,7 @@ permalink: /
 视频教程：[https://www.bilibili.com/video/BV1mDf5Y3ERU/](https://www.bilibili.com/video/BV1mDf5Y3ERU)
 
 
-原计划是[安卓端APP](https://github.com/LiuJiewenTT/CBJQ_HugFenny)，但由于 *Shizuku* 方面的原因，暂时不确定如何解决“最后一个问题”。
+原计划是[安卓端APP](https://github.com/LiuJiewenTT/CBJQ_HugFenny)，但需要配合 *Shizuku / Sui* 使用，由于安装设置的操作在部分品牌和型号的手机上复杂度差异可能较大，建议考虑使用此应用统一管理。
 
 电脑端小开关切换工具：[https://github.com/LiuJiewenTT/CBJQ_XiaoKaiGuan](https://github.com/LiuJiewenTT/CBJQ_XiaoKaiGuan)
 
@@ -61,11 +61,11 @@ permalink: /
    删除请求列出的操作项目解释如下：
    - `Approve all`：确认对所有APP执行删除。
    - `Disapprove all`：拒绝对所有APP执行删除。
-   - `Let me decide on every app`：逐一选择是否执行删除。
+   - `Let me decide on each app`：逐一选择是否执行删除。
 4. 选择要对状态操作的选项（单选），方向键移动，按下回车确认。操作解释如下：
    - `All 1`：全部开启本地化。
    - `All 0`：全部关闭本地化。
-   - `Let me decide on every app`：逐一选择开启/关闭本地化。
+   - `Let me decide on each app`：逐一选择开启/关闭本地化。
    - `Keep current states`：保持当前状态不变。
 5. 等待程序运行完成，如果所有操作成功，你将会看到`... successfully.`。
 

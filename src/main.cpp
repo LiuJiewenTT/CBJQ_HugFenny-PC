@@ -41,8 +41,8 @@ int main(int argc, char *argv[]) {
     int operation_choice = 0;
     string operation_choice_str;
     std::vector<string> operation_choice_list;
-    std::vector<string> operation_choice_list_1 = {"All 1", "All 0", "Let me decide on every app", "Keep current states"};
-    std::vector<string> operation_choice_list_2 = {"Approve all", "Disapprove all", "Let me decide on every app"};
+    std::vector<string> operation_choice_list_1 = {"All 1", "All 0", "Let me decide on each app", "Keep current states"};
+    std::vector<string> operation_choice_list_2 = {"Approve all", "Disapprove all", "Let me decide on each app"};
     std::vector<string> operation_choice_list_3 = {"Yes", "No"};
     std::vector<string> operation_choice_list_4 = {"Set to 1", "Set to 0", "Keep current state"};
 
